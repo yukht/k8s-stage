@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deploy
+  labels:
+    app: myapp
+spec:
+  selector:
+    matchLabels:
+      app: myapp-pod
+  replicas: 2 # запускает 2 пода, созданных по шаблону
+  template:
+    metadata:
+      labels:
+        app: myapp-pod
+    spec:
+      containers:
+      - name: myapp-container
+        image: busybox
+        ports:
+          - containerPort: 80
+        command: ['sh', '-c', 'echo Hello Kubernetes from the Deployment! && sleep 3600']
