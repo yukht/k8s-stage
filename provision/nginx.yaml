@@ -1,0 +1,57 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: nginx-conf
+data:
+  nginx.conf: |
+    user nginx;
+    worker_processes  1;
+    events {
+      worker_connections  10240;
+    }
+    http {
+      server {
+          listen       80;
+          server_name  localhost;
+          location / {
+            root   /usr/share/nginx/html;
+            index  index.html index.htm;
+        }
+      }
+    }
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: web1-deploy
+  labels:
+    app: web1.0
+spec:
+  selector:
+    matchLabels:
+      app: web1-pod
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: web1-pod
+    spec:
+      containers:
+        - name: web1-container
+          image: nginx:1.21.1-alpine
+          volumeMounts:
+            - name: config
+              mountPath: /etc/nginx
+              readOnly: true
+          ports:
+            - containerPort: 80
+      volumes:
+        - name: config
+          configMap:
+            name: nginx-conf
+            items:
+              - key: nginx.conf
+                path: nginx.conf
+
+#        command: ['sh', '-c', 'echo Hello Kubernetes from the Deployment! && sleep 3600']
+
