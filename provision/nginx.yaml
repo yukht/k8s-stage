@@ -45,6 +45,7 @@ spec:
               readOnly: true
           ports:
             - containerPort: 80
+              name: web1-nginx-port
       volumes:
         - name: config
           configMap:
@@ -52,6 +53,35 @@ spec:
             items:
               - key: nginx.conf
                 path: nginx.conf
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: web1-service
+spec:
+  type: NodePort
+  selector:
+    app: web1-pod
+  ports:
+  - protocol: TCP
+    nodePort: 30000
+    port: 80
+    targetPort: web1-nginx-port
+
+
+
+#kind: Service
+#apiVersion: v1
+#metadata:
+#  name: web1-service
+#spec:
+#  selector:
+#    app: web1-pod
+#  ports:
+#  - protocol: TCP
+#    port: 80
+#    targetPort: web1-nginx-port
+
 
 #        command: ['sh', '-c', 'echo Hello Kubernetes from the Deployment! && sleep 3600']
 
