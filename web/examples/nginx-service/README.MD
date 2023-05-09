@@ -35,3 +35,6 @@ echo "$(minikube ip) web1.app" >> /etc/hosts
 
 curl http://web1.app/web
 ```
+
+Также можно использовать для аутентификации Basic пример из следующей статьи:
+https://kubernetes.github.io/ingress-nginx/examples/auth/basic
