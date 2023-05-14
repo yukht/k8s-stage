@@ -1,0 +1,31 @@
+# Команды, которые могут пригодиться при разворачивании приложений helm
+
+# Поиск json-объектов
+kubectl get pods -o=jsonpath='{@}'
+kubectl get pods --all-namespaces -o=jsonpath='{.items[*].metadata.labels}'
+
+# Отобразить все labels в namespace (также --namespace)
+kubectl -n monitoring get pods --show-labels
+
+# Посмотреть поды prometheus, созданные через helm (в helm приложения называются release)
+kubectl -n monitoring get pods -l "release=prometheus-stack"
+
+# Пример найденного label
+prometheus=prometheus-stack-kube-prom-prometheus
+
+# Посмотреть поды через селектор
+kubectl get pods --selector prometheus=prometheus-stack-kube-prom-prometheus
+
+# Этот запрос я использовал для создания service, выбирающего под по уникальной метке (app.kubernetes.io/name=grafana)
+kubectl get pods -n monitoring -o=jsonpath='{.items[*].metadata.labels.app\.kubernetes\.io\/name}'
+
+# Прим. метку можно быстро узнать, например, из существующего nodePort service графаны
+kubectl edit service prometheus-stack-grafana
+
+kubectl get services prometheus-stack-grafana -o wide
+
+# Еще полезные варианты использования kubectl для манипуляций с labels в статье
+https://kubebyexample.com/concept/labels
+
+# Ссылка на приложение prometheus (см. назначение имен подам)
+https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack

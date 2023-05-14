@@ -1,0 +1,14 @@
+# Добавить репозиторий в helm
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+
+# Установить репозитерий kube-prometheus-stack
+kubectl create ns monitoring
+helm install prometheus-stack prometheus-community/kube-prometheus-stack -n monitoring
+
+# После установки будет предложено удостовериться в целостности подов по метке release
+kubectl --namespace monitoring get pods -l "release=prometheus-stack"
+
+# Проброс портов Grafana (найти под командой kubectl get pods -n monitoring)
+kubectl -n monitoring port-forward prometheus-stack-grafana-67f9cb7f4-rq9sp 3000:3000
+
+

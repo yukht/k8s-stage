@@ -1,0 +1,39 @@
+##########################################
+## Вам могут пригодиться следующие файлы##
+##########################################
+# 1 #
+kubectl
+# Скачивается по ссылке в виде бинарного файла, который можно засунуть, например, в /usr/local/bin/
+# После этого добавьте в .bashrc автодополнение kubectl и alias для более быстрого вызова команды (ниже приведен пример)
+source <(kubectl completion bash) # set up autocomplete in bash into the current shell, bash-completion package should be installed first.
+echo "source <(kubectl completion bash)" >> ~/.bashrc # add autocomplete permanently to your bash shell
+echo "alias k='kubectl'" >> ~/.bashrc
+
+# 2 #
+yc_install.sh
+# Если используется Яндекс облако, необходимо установить и настроить приложение yc, которое, помимо возможности управления ресурсами,
+# поможет настроить ваш kubectl
+# Устанавливается согласно документации https://cloud.yandex.com/en/docs/cli/operations/install-cli
+
+# 3 #
+get_krew.sh
+# Для установки утилит ctx и ns через krew (чтобы вызывать эти команды как плагины kubectl), нужен krew
+# https://krew.sigs.k8s.io/docs/user-guide/setup/install
+# Необходимо добавить в .bashrc ссылку для запуска krew
+# export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+
+# 4 #
+# После установки krew можно добавить ctx, ns и другие полезные плагины к kubectl (список плагинов ниже)
+# https://krew.sigs.k8s.io/plugins/
+kubectl krew install ctx
+kubectl krew install ns
+
+# 5 #
+# Для установки дополнений к оболочке fish, рекомендую установщик плагинов fisher
+# Пример для установки автодополнения kubectl в оболочке fish
+curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
+fisher install evanlucas/fish-kubectl-completions
+
+# 6 #
+get_helm.sh
+
