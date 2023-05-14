@@ -22,5 +22,8 @@ helm list
 helm list --filter 'pro[a-z].*'
 
 
+# Update values
 
 wget https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/prometheus/values.yaml 
+
+helm upgrade --install -n prometheus prometheus prometheus-community/prometheus --values update-values.yaml
