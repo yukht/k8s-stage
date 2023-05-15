@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: nginx-service
+spec:
+  type: NodePort
+  selector:
+    app: web2
+    release: my-nginx
+  ports:
+  - protocol: TCP
+    nodePort: 30002
+    port: 9180
+    targetPort: web2-nginx-port
+

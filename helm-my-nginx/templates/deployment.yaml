@@ -1,0 +1,37 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: web2-prod
+  labels:
+    app: web2.0
+    release: my-nginx
+spec:
+  selector:
+    matchLabels:
+      app: web2
+      release: my-nginx
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: web2
+        release: my-nginx
+    spec:
+      containers:
+        - name: web2-container
+          image: nginx:1.21.1-alpine
+          volumeMounts:
+            - name: config
+              mountPath: /etc/nginx
+              readOnly: true
+          ports:
+            - containerPort: 80
+              name: web2-nginx-port
+      volumes:
+        - name: config
+          configMap:
+            name: web2-nginx-conf
+            items:
+              - key: nginx.conf
+                path: nginx.conf
+

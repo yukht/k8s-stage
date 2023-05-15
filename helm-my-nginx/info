@@ -1,0 +1,6 @@
+helm install --create-namespace --namespace web2 my-nginx .
+
+helm upgrade --install --create-namespace --namespace web2 my-nginx .
+
+# helm uninstall -n web2 my-nginx
+

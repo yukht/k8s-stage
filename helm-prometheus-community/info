@@ -13,6 +13,7 @@ helm upgrade --install -n prometheus prometheus prometheus-community/prometheus 
 # -l, --versions             show the long listing, with each version of each chart on its own line, for repositories you have added
 
 helm upgrade --install -n prometheus prometheus --version 18.4.0 prometheus-community/prometheus
+helm upgrade --install --n prometheus prometheus --version 18.4.0 prometheus-community/prometheus --values update-values.yaml
 
 
 helm status prometheus -n prometheus
@@ -26,4 +27,8 @@ helm list --filter 'pro[a-z].*'
 
 wget https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/prometheus/values.yaml 
 
+helm install -n prometheus prometheus prometheus-community/prometheus
+
 helm upgrade --install -n prometheus prometheus prometheus-community/prometheus --values update-values.yaml
+
+
