@@ -1,37 +1,46 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: web2-prod
+  name: {{ .Release.Name }}-deployment
   labels:
-    app: web2.0
-    release: my-nginx
+    app: {{ .Values.app.release_label }}
+    release: {{ .Release.Name }}
 spec:
   selector:
     matchLabels:
-      app: web2
-      release: my-nginx
-  replicas: 1
+      app: {{ .Values.app.release_label }}
+      release: {{ .Release.Name }}
+  replicas: {{ .Values.replicaCount }}
   template:
     metadata:
       labels:
-        app: web2
-        release: my-nginx
+        # Immutable
+        app: {{ .Values.app.release_label }}
+        release: {{ .Release.Name }}
     spec:
       containers:
         - name: web2-container
-          image: nginx:1.21.1-alpine
+          image: {{ .Values.current_image.repository }}:{{ .Values.current_image.tag }}
           volumeMounts:
-            - name: config
+            - name: config-nginx
               mountPath: /etc/nginx
+              readOnly: true
+            - name: config-www
+              mountPath: /var/www
               readOnly: true
           ports:
             - containerPort: 80
               name: web2-nginx-port
       volumes:
-        - name: config
+        - name: config-nginx
           configMap:
             name: web2-nginx-conf
             items:
               - key: nginx.conf
                 path: nginx.conf
-
+        - name: config-www
+          configMap:
+            name: web2-www-index
+            items:
+              - key: index.html
+                path: index.html

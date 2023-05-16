@@ -4,3 +4,8 @@ helm upgrade --install --create-namespace --namespace web2 my-nginx .
 
 # helm uninstall -n web2 my-nginx
 
+# Update values
+helm upgrade --install --namespace web2 --values values.yaml my-nginx .
+
+# Rollback to revision (revision 9 as example + increase current revision 10 to 11)
+helm rollback --namespace web2 my-nginx 9
