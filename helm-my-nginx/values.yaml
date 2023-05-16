@@ -6,14 +6,25 @@ replicaCount: 1
 
 current_image:
   repository: nginx
-  tag: "1.21.3-alpine"
-#  updated from:
-#  tag: "1.21.1-alpine"
+  tag: "1.21.1-alpine"
 
 app:
-  name: web2.0.2
+  descr: web2 third crocodile
   # Immutable
-  release_label: web2.0.1
+  release_label: web2
+
+limits:
+  cpu: 200m
+  memory: 64Mi
+  enabled: true
+
+env_test:
+  FIRST_BLOCK:
+    name: URL1
+    value: "http://www.google.com"
+  SECOND_BLOCK:
+    name: URL2
+    value: "http://www.yandex.ru"
 
 # Auto created:
 

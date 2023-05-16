@@ -9,6 +9,6 @@ spec:
     release: {{ .Release.Name }}
   ports:
   - protocol: TCP
-    nodePort: 30003
+    nodePort: 30002
     port: 9180
     targetPort: web2-nginx-port

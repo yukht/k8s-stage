@@ -21,6 +21,26 @@ spec:
       containers:
         - name: web2-container
           image: {{ .Values.current_image.repository }}:{{ .Values.current_image.tag }}
+#          envFrom:
+#            - configMapRef
+#                name: env-conf
+          env:
+            - name: URL1
+              valueFrom:
+                configMapKeyRef:
+                  name: env-conf
+                  key: KEYS
+#          env:
+#            - name: URL1
+#              valueFrom:
+#                configMapKeyRef:
+#                  name: env-conf
+#                  key: URL1
+#            - name: URL2
+#              valueFrom:
+#                configMapKeyRef:
+#                  name: env-conf
+#                  key: URL2
           volumeMounts:
             - name: config-nginx
               mountPath: /etc/nginx
@@ -31,6 +51,12 @@ spec:
           ports:
             - containerPort: 80
               name: web2-nginx-port
+{{- if eq $.Values.limits.enabled true}}
+          resources:
+            limits:
+              memory: {{ $.Values.limits.memory }}
+              cpu: {{ $.Values.limits.cpu }}
+{{- end}}
       volumes:
         - name: config-nginx
           configMap:
@@ -44,3 +70,4 @@ spec:
             items:
               - key: index.html
                 path: index.html
+
