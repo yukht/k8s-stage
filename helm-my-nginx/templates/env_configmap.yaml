@@ -1,9 +1,0 @@
-kind: ConfigMap
-apiVersion: v1
-metadata:
-  name: env-conf
-data:
-  KEYS: |
-{{- range $env := .Values.env_test }}
-    {{ $env.name }}: {{ $env.value }}
-{{- end }}

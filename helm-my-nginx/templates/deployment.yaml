@@ -21,26 +21,14 @@ spec:
       containers:
         - name: web2-container
           image: {{ .Values.current_image.repository }}:{{ .Values.current_image.tag }}
-#          envFrom:
-#            - configMapRef
-#                name: env-conf
           env:
-            - name: URL1
-              valueFrom:
-                configMapKeyRef:
-                  name: env-conf
-                  key: KEYS
-#          env:
-#            - name: URL1
-#              valueFrom:
-#                configMapKeyRef:
-#                  name: env-conf
-#                  key: URL1
-#            - name: URL2
-#              valueFrom:
-#                configMapKeyRef:
-#                  name: env-conf
-#                  key: URL2
+{{- range $env := .Values.env_links }}
+            - name: {{ $env.name }}
+              value: {{ $env.value }}
+{{- end }}
+#          envFrom:
+#          - configMapRef:
+#              name: env-conf
           volumeMounts:
             - name: config-nginx
               mountPath: /etc/nginx

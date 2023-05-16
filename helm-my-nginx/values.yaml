@@ -9,7 +9,7 @@ current_image:
   tag: "1.21.1-alpine"
 
 app:
-  descr: web2 third crocodile
+  descr: web2 secondary stupid monkey
   # Immutable
   release_label: web2
 
@@ -18,13 +18,25 @@ limits:
   memory: 64Mi
   enabled: true
 
-env_test:
-  FIRST_BLOCK:
+env_links:
+  US_LINKS1:
     name: URL1
-    value: "http://www.google.com"
-  SECOND_BLOCK:
+    value: "https://www.google.com"
+  US_LINKS2:
     name: URL2
-    value: "http://www.yandex.ru"
+    value: "https://www.kubernetes.io"
+  US_LINKS3:
+    name: URL3
+    value: "https://www.twitter.com"
+  US_LINKS4:
+    name: URL4
+    value: "https://www.microsoft.com"
+  RU_LINKS1:
+    name: URL5
+    value: "https://www.yandex.ru"
+  RU_LINKS2:
+    name: URL6
+    value: "https://www.tass.ru"
 
 # Auto created:
 
