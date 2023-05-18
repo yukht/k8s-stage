@@ -9,3 +9,7 @@ helm upgrade --install --namespace web2 --values values.yaml my-nginx .
 
 # Rollback to revision (revision 9 as example + increase current revision 10 to 11)
 helm rollback --namespace web2 my-nginx 9
+
+# Port-forwarding
+kubectl port-forward --address 0.0.0.0 -n my-nginx service/my-nginx-service 8080:9280
+
