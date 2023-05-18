@@ -1,0 +1,13 @@
+# Put chart in namespace ci-nginx
+helm install -n ci-nginx --create-namespace ci-nginx .
+
+# helm uninstall -n ci-nginx ci-nginx
+
+# Update values
+helm upgrade --install -n ci-nginx --values values.yaml ci-nginx .
+
+# Rollback to revision 2 (And increase current revision to 4)
+helm rollback -n ci-nginx ci-nginx 2
+
+# Port-forwarding
+kubectl port-forward --address 0.0.0.0 -n ci-nginx service/ci-nginx-service 8080:9280

@@ -1,0 +1,8 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-env-conf
+data:
+{{- range $env := .Values.env_links }}
+  {{ $env.name }}: {{ $env.value }}
+{{- end }}

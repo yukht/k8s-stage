@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-service
+  namespace: {{ .Values.app.release_label }}
+spec:
+  type: NodePort
+  selector:
+    app: {{ .Values.app.release_label }}
+    release: {{ .Release.Name }}
+  ports:
+  - protocol: TCP
+    nodePort: {{ .Values.service.nodePort}}
+    port: {{ .Values.service.port}}
+    targetPort: nginx-port

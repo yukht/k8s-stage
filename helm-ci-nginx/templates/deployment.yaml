@@ -1,0 +1,62 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: {{ .Release.Name }}-deployment
+  labels:
+    app: {{ .Values.app.release_label }}
+    release: {{ .Release.Name }}
+  namespace: {{ .Values.app.release_label }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.app.release_label }}
+      release: {{ .Release.Name }}
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        # Immutable
+        app: {{ .Values.app.release_label }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Release.Name }}-container
+          image: {{ .Values.current_image.repository }}:{{ .Values.current_image.tag }}
+          env:
+{{- range $env := .Values.env_links }}
+            - name: {{ $env.name }}
+              value: {{ $env.value }}
+{{- end }}
+#          envFrom:
+#          - configMapRef:
+#              name: {{ .Release.Name }}-env-conf
+          volumeMounts:
+            - name: config-nginx
+              mountPath: /etc/nginx
+              readOnly: true
+            - name: config-www
+              mountPath: /var/www
+              readOnly: true
+          ports:
+            - containerPort: 80
+              name: nginx-port
+{{- if eq $.Values.limits.enabled true}}
+          resources:
+            limits:
+              memory: {{ $.Values.limits.memory }}
+              cpu: {{ $.Values.limits.cpu }}
+{{- end}}
+      volumes:
+        - name: config-nginx
+          configMap:
+            name: {{ .Release.Name }}-nginx-conf
+            items:
+              - key: nginx.conf
+                path: nginx.conf
+        - name: config-www
+          configMap:
+            name: {{ .Release.Name }}-www-index
+            items:
+              - key: index.html
+                path: index.html
+
