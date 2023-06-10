@@ -6,6 +6,9 @@ helm repo update
 
 helm search repo prometheus-community/prometheus
 
+# Versions
+helm search repo prometheus-community/prometheus -l
+
 kubectl create ns prometheus
 
 
@@ -13,7 +16,7 @@ helm upgrade --install -n prometheus prometheus prometheus-community/prometheus 
 # -l, --versions             show the long listing, with each version of each chart on its own line, for repositories you have added
 
 helm upgrade --install -n prometheus prometheus --version 18.4.0 prometheus-community/prometheus
-helm upgrade --install --n prometheus prometheus --version 18.4.0 prometheus-community/prometheus --values update-values.yaml
+helm upgrade --install -n prometheus prometheus --version 18.4.0 prometheus-community/prometheus --values update-values.yaml
 
 
 helm status prometheus -n prometheus
